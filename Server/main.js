@@ -3,18 +3,19 @@ const app = express();
 const cors = require('cors')
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const users = require('./model')
+const users = require('./model');
+const QuestionList = require('./Questions')
 
 
-const uri =``
-mongoose.connect("mongodb+srv://Raghava:msccs2021@cluster0.sza8cms.mongodb.net/?retryWrites=true&w=majority").then(() => console.log('conncect success')).catch(error => console.error("error is :",error));
+
+
 //knowledge base 
 const database = require('./knowledgeBase');
 
 //tau-prolog 
 const pl = require("tau-prolog");
 const loader = require("tau-prolog/modules/lists.js");
-const { count } = require('./model');
+// const { user } = require('./model');
 loader(pl);
 
 app.use(bodyParser.json()) 
@@ -24,34 +25,71 @@ app.use(cors()) ;
 //port number 
 const port = 5000;
 
+//mogoose connection
+mongoose.connect("mongodb+srv://Raghava:msccs2021@cluster0.sza8cms.mongodb.net/?retryWrites=true&w=majority").then(() => console.log('conncect success')).catch(error => console.error("error is :",error));
 
 
 
 //app.post for storing response objects
-var responseData = [];
+
 var facts = `student(yes)`;
-var totalScore = 0;
-var selectedQuestions = [];
 
 
-;
-//post users count from mongodb
-app.get('/users', async ( req, res) => {
+var singleUser = {
+    uid:  1,
+    email:'vijaykamesh33@gmail.com',
+    selectedQuestions:[],
+    date: Date.now(),
+    totalScore: 0,
+    facts:''
+}
 
-    const result = await users.findById({id:1});
-    console.log('count value of result', result);
-    res.json(result);
+app.get('/questions', ( req, res ) => {
+    res.json(QuestionList);
+})
 
+app.get('/find', async (req,res) => {
+    try {
+        const totalUsers = await users.find();
+        const totalCount = totalUsers.length;
+        res.json({success: true, 
+            totalCount:totalCount})
+    } catch {
+        console.log('data fetching from database has failed')
+        res.json({success: false, fail: true})
+    }
+   
+    
+   
+})
+app.post('/submit', async (req,res) => {
+    singleUser.uid = req.body.users;
+    
+    let sum = 0;
+    singleUser.selectedQuestions.map(question => {
+        sum = sum + question.score;
+    })
+    singleUser.totalScore = sum;
+    singleUser.facts = facts;
+    
+     
+    singleUser.date =  new Date();
 
-});
-//post users count from mongodb
-app.post('/users', async ( req, res) => {
-    // const counter = req.body.count;
+    console.log('on submit post', singleUser);
+    const result = new users(singleUser);
+    try{
+        await result.save();
+        console.log('successfully saved data');
+        res.json({success: true, totalScore : singleUser.totalScore, questions: singleUser.selectedQuestions})
 
-    const postCount = await users.updateOne({id: 1}, {count: 2});
-    console.log('post counter:',postCount)
-
-
+    } catch {
+        console.log('save error occured');
+        res.json({success: false, fail: true})
+    }
+    
+    
+       singleUser.selectedQuestions = []; 
+    
 })
 
 app.post('/data', (req,res)=>{
@@ -68,34 +106,36 @@ app.post('/data', (req,res)=>{
     const { questionId, title, predicate, argument, option, score } = response;
 
     //storing user response in responseData array
-    responseData.push(response);
+    // responseData.push(response);
+    singleUser.selectedQuestions.push(response);
+    // console.log(singleUser)
    
 
     // concatinatin predicates as facts
     facts= facts + `,${predicate}(${argument}, ${option})`;
 
     // sum of total score based on  user selected option
-    totalScore = totalScore + score;
-    console.log('total score is: ', totalScore);
+    // totalScore = totalScore + score;
+    // console.log('total score is: ', totalScore);
    
     // storing user selected question with option and score in selectedQuestions array
-    selectedQuestions.push({
-        questionId,
-        title,
-        option,
-        score
-    })
+    // selectedQuestions.push({
+    //     questionId,
+    //     title,
+    //     option,
+    //     score
+    // })
 
-    console.log(selectedQuestions);
+    // console.log(selectedQuestions);
     
-    const result = new users({id: 1, count: 0});
-    result.save()
+    // const result = new users({id: 1, count: 0});
+    // result.save()
     
 
 })
 
 // prolog logic implementation through get method '/'
-app.get('/', (req, res) => {
+app.get('/prolog', (req, res) => {
   
 
 
