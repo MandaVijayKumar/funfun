@@ -1,0 +1,77 @@
+import React from 'react'
+import ChatBot from 'react-simple-chatbot';
+
+export function PsychoArea() {
+  console.log('i am sycho');
+
+  const steps = [
+    {
+      id: 1,
+      message: 'hi how are you',
+      trigger: 2
+    },
+    
+    {
+      id: 2,
+      user: true,
+      trigger: 3
+    },
+
+    {
+      id: 3,
+      message: 'ok . good',
+      trigger: 4
+    },
+    {
+      id: 4,
+      message: 'what is your name?',
+      trigger: 5
+    },
+    {
+      id: 5,
+      user: true,
+      trigger: 5.1
+    },
+    {
+      id: 5.1,
+      message: 'hi {previousValue}, can you choose your problem',
+      trigger: 6
+    },
+  
+    {
+      id: 6,
+     options:[
+             {value: 1, label: 'Depression' , trigger: 7},
+             {value: 2, label: 'anxity' , trigger: 8},
+             {value: 3, label: 'stress' , trigger: 9},
+     ],
+     
+    },
+    {
+      id: 7,
+      message: 'ok. do not worry , we will help you come out from depression!',
+      end: true
+    
+    },
+    {
+      id: 8,
+      message: 'ok. do not worry , we will help you come out from anxity! ',
+      end: true
+    
+    },
+    {
+      id: 9,
+      message: 'ok. do not worry , we will help you to come out from stress!',
+      end: true
+    
+    },
+  ]
+  return (
+    <div style={{display: 'flex', justifyContent:'flex-start', alignItems:'flex-start'}}>
+      <ChatBot steps={steps} headerTitle="Speech Recognition"
+        recognitionEnable={true}
+        speechSynthesis={{ enable: true, lang: 'en' }} />
+    </div>
+  )
+}
+
