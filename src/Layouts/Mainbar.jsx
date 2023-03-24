@@ -15,7 +15,7 @@ function Mainbar() {
   return (
 
     <div>
-      <Sidebar/>
+     
      
         <Routes>
           <Route path="/" element={<Home />} />

@@ -4,7 +4,8 @@ import {auth, provider} from '../Auth/firebase';
 import { signInWithPopup,  onAuthStateChanged} from "firebase/auth";
 import { authContext } from "../Context";
 import { useNavigate } from "react-router-dom";
-
+import '../Style/Home.css'
+import signin from '../Asserts/images/googlesignin.png'
 export function Home() {
   const navigate = useNavigate();
   const authUser = useContext(authContext);
@@ -16,7 +17,9 @@ export function Home() {
   const googleSignIn = () => {
     signInWithPopup(auth, provider)
   .then((result) => {
-  navigate('/workingarea')
+   
+  
+  navigate('/psychoarea/introduction')
   }).catch((error) => {
     console.log(error)
     
@@ -44,13 +47,14 @@ export function Home() {
 
 
   return (
-    <div className='' >
-      <div className="row">
-        
-        <div className="col-sm-4">
-        <button onClick={googleSignIn}> Google Login</button>
+    <div className='login' >
+      <div>
+      <button onClick={googleSignIn} className="btn btn-sm btn-rounded"> <img src={signin} alt="not found"  style={{width:'50%', height:'50%'}}/></button>
+      </div>
+   
        
-        </div>
+       
+
       </div>
       
         
@@ -59,7 +63,7 @@ export function Home() {
 
      
     
-    </div>
+   
   )
 }
 
