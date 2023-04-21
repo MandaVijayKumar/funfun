@@ -3,7 +3,10 @@
 import React, { useState } from "react";
 import Header from "./Layouts/Header";
 import { authContext } from "./Context";
-import { Home, PsychoArea } from './Pages';
+// import {  PsychoArea } from './Pages';
+import Home from './Pages/Home'
+import PsychoArea from './Pages/PsychoArea'
+
 
 
 import {  Routes, Route } from 'react-router-dom'
@@ -13,10 +16,11 @@ import './App.css'
 import Mainbar from "./Layouts/Mainbar";
 import Community from "./Pages/Community";
 import MentalHealth from "./Pages/MentalHealth";
-import DepressionTest from "./Pages/DepressionTest";
+// import DepressionTest from "./Pages/DepressionTest";
 import AnxiotyTest from "./Pages/AnxiotyTest";
 import ChatGpt from "./Pages/ChatGpt";
 import Introduction from "./Pages/Introduction";
+import AskYourProblem from "./Pages/AskYourProblem";
 
 
 
@@ -42,14 +46,15 @@ function App() {
         
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path='psychoarea' element={<PsychoArea />}>
+          <Route path='psychoarea' element={<PsychoArea/>}>
             
             <Route path="introduction" element = {<Introduction/>}  />
             <Route path="chatgpt" element = {<ChatGpt/>}  />
 
             <Route path="mentalhealth" element={<MentalHealth/>}  />
-            <Route path="depressiontest" element={<DepressionTest/>} />
+            {/* <Route path="depressiontest" element={<DepressionTest/>} /> */}
             <Route path="anxiotytest" element={<AnxiotyTest/>} />
+            <Route path="askyourproblem" element={<AskYourProblem/>} />
 
           </Route>
          
