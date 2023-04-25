@@ -1,6 +1,6 @@
-// const userData = useContext(authContext);
-// const {user} = userData;
-// console.log('sidebar', user);
+// // const userData = useContext(authContext);
+// // const {user} = userData;
+// // console.log('sidebar', user);
 import { authContext } from '../Context';
 
 import React, { useContext } from 'react';
@@ -96,12 +96,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function Sidebar() {
+export default function Sidebar({openSidebar, setOpenSidebar}) {
   const userData = useContext(authContext);
   const { user } = userData;
   console.log('sidebar', user);
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const features = [
     { name: 'introduction', link: 'introduction' },
     { name: 'Chat with Ai', link: 'chatgpt' },
@@ -115,11 +115,12 @@ export default function Sidebar() {
   };
 
   const handleDrawerClose = () => {
+    setOpenSidebar(false)
     setOpen(false);
   };
 
   return (
-    <Box sx={{ display: 'flex',paddingTop: '10%' }}>
+    <Box sx={{ display: 'flex',marginTop: '4rem !important', position:'absolute !important ', top:'5rem !important' }}>
       {/* <CssBaseline /> */}
       {/* <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -141,8 +142,8 @@ export default function Sidebar() {
         </Toolbar>
       </AppBar> */}
 
-      <Drawer variant="permanent" open={open} sx={{ background: 'purple',opacity:'1' }}>
-        {open ?  <button className='btn btn-sm bg-secondary m-2' onClick={handleDrawerClose}><span className='h4 text-danger'>X</span></button>
+      <Drawer variant="permanent" open={open} sx={{ background: 'purple',opacity:'1', position:'relative', top:'4rem' }}>
+        {open ?  <button className='btn btn-sm bg-white m-2' onClick={handleDrawerClose}><span className='text-muted text-danger'>Close</span></button>
         :(  <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -150,7 +151,7 @@ export default function Sidebar() {
           edge="start"
           sx={{
             marginX: '10px',
-            ...(open && { display: 'none' }),
+           
 
           }}
         >
@@ -204,3 +205,56 @@ export default function Sidebar() {
     </Box>
   );
 }
+
+
+// import React, { useState, useContext } from "react";
+// import { Navbar, Nav, Image } from "react-bootstrap";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+// import { authContext } from '../Context';
+
+
+
+// const Sidebar = ({  links }) => {
+//   const userData = useContext(authContext);
+//   const { user } = userData;
+//   console.log('sidebar', user);
+//   const [showSidebar, setShowSidebar] = useState(false);
+
+//   const handleToggleSidebar = () => {
+//     setShowSidebar(!showSidebar);
+//   };
+
+//   return (
+//     <div className="sidebar-container">
+//       <Navbar bg="light" variant="light">
+//         <Navbar.Brand>
+//           <Image
+//             src={user.userPhoto}
+//             width="30"
+//             height="30"
+//             roundedCircle
+//             className="d-inline-block align-top mr-2"
+//           />
+//           {user.userName}
+//         </Navbar.Brand>
+//         <Nav className="ml-auto d-md-none">
+//           <Nav.Link onClick={handleToggleSidebar}>
+//             <FontAwesomeIcon icon={showSidebar ? faTimes : faBars} />
+//           </Nav.Link>
+//         </Nav>
+//       </Navbar>
+//       <div className={`sidebar ${showSidebar ? "show" : ""}`}>
+//         <Nav className="flex-column">
+//           {links.map((link) => (
+//             <Nav.Link key={link.id} href={link.url}>
+//               {link.label}
+//             </Nav.Link>
+//           ))}
+//         </Nav>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Sidebar;
