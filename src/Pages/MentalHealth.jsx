@@ -828,6 +828,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Form, Button, Card, ListGroup } from 'react-bootstrap';
 import '../Style/MentalHealth.css';
+import Webcam from '../Components/Webcam';
 
 function MentalHealth() {
   const [problem, setProblem] = useState('');
@@ -878,6 +879,7 @@ function MentalHealth() {
 
   return (
     <div className="psychology-counseling">
+      <Webcam />
       <Container>
        {questions.length === 0 &&(<><h1 className="text-center mb-4">Psychology Counseling</h1>
         <Form.Group controlId="problem">
